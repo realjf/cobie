@@ -44,10 +44,18 @@ func ping(host string) {
 	nerverstop := false
 
 	// 查找dns主机名字
-	cname, _ := net.LookupCNAME(host)
+	cname, err := net.LookupCNAME(host)
+	if err != nil {
+		fmt.Println("dns无法解析域名 " + host + "，可能域名尚未启用")
+		os.Exit(-1)
+	}
 	starttime := time.Now()
 
 	conn, err := net.DialTimeout("ip4:icmp", host, time.Duration(timeout * 1000 * 1000))
+	if err != nil {
+		fmt.Println("创建连接" + cname + "失败")
+		os.Exit(-1)
+	}
 	//每个域名可能对应多个ip，但实际连接时，请求只会转发到某一个上，故需要获取实际连接的远程ip，才能知道实际ping的机器是哪台
 	ip := conn.RemoteAddr()
 	fmt.Println("正在 Ping " + cname + " [" + ip.String() + "] 具有 32 字节的数据:")
