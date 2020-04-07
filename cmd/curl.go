@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
+	"io/ioutil"
 	"net/http"
 	"os"
 )
@@ -47,4 +48,11 @@ func get(url string) {
 		}
 		fmt.Println(k + ": " + val)
 	}
+	fmt.Println()
+	body, err := ioutil.ReadAll(rsp.Body)
+	if err != nil {
+		fmt.Println("读取页面数据失败")
+		os.Exit(-1)
+	}
+	fmt.Println("[页面数据]： ", string(body))
 }
