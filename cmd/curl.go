@@ -16,7 +16,7 @@ func init() {
 var curlCmd = &cobra.Command{
 	Use:   "curl",
 	Short: "curl [I] http://host:port/xxx",
-	Long:  `like curl [I] http://host:port/xxx`,
+	Long:  `like curl [I] http://host:port/xxx， ‘I’ means don't need to return html document'`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) < 1 {
 			return errors.New("usage: curl [I] http://host:port/xxx")
