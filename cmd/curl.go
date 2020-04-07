@@ -4,9 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"github.com/spf13/cobra"
-	"os"
-	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 func init() {
@@ -16,7 +15,7 @@ func init() {
 var curlCmd = &cobra.Command{
 	Use:   "curl",
 	Short: "curl http://host:port/xxx",
-	Long: `like curl get http://host:port/xxx`,
+	Long:  `like curl -I http://host:port/xxx`,
 	Args: func(cmd *cobra.Command, args []string) error {
 		if len(args) != 1 {
 			return errors.New("usage: curl http://host:port/xxx")
@@ -39,10 +38,13 @@ func get(url string) {
 	}
 	defer rsp.Body.Close()
 
-	body, err := ioutil.ReadAll(rsp.Body)
-	if err != nil {
-		fmt.Println("读取返回数据失败", err)
-		os.Exit(-2)
+	// 确认服务器信息
+	rspHeader := rsp.Header
+	for k, v := range rspHeader {
+		var val string
+		for _, vv := range v {
+			val += vv
+		}
+		fmt.Println(k + ": " + val)
 	}
-	fmt.Println("[RESPONSE]:", string(body))
 }
