@@ -11,10 +11,8 @@ func init() {
 
 var versionCmd = &cobra.Command{
 	Use:   "version",
-	Short: "Print the version number",
+	Short: "Print the version number of cobie",
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("cobie v1.0.0")
 	},
 }
-
-
